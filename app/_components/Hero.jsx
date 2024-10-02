@@ -10,7 +10,7 @@ function Hero() {
             Manage Your Expense
             <strong className="font-extrabold text-primary sm:block">
               {" "}
-              Control Your Money {" "}
+              Control Your Money{" "}
             </strong>
           </h1>
 
@@ -29,11 +29,13 @@ function Hero() {
         </div>
       </div>
 
-      <Image src={"/dashboard.jpg"}
-      width={1000}
-      height={700}
-      alt="dashboard"
-      className="-mt-9 rounded-xl border-2"  />
+      <Image
+        src={"/dashboard.jpg"}
+        width={1000}
+        height={700}
+        alt="dashboard"
+        className="-mt-9 rounded-xl border-2"
+      />
     </section>
   );
 }
