@@ -3,35 +3,46 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { db } from "@/utils/dbConfig";
 import { Budgets, Expenses } from "@/utils/schema";
+import { Loader } from "lucide-react";
 import moment from "moment";
 import React, { useState } from "react";
 import { toast } from "sonner";
 
-function AddExpense({budgetId, user, refreshData}) {
-    const [name, setName] = useState()
-    const [amount, setAmount] = useState()
+function AddExpense({ budgetId, user, refreshData }) {
+  const [name, setName] = useState();
+  const [amount, setAmount] = useState();
+  const [loading, setLoading] = useState(false);
+  const addNewExpense = async () => {
+    setLoading(true);
+    const result = await db
+      .insert(Expenses)
+      .values({
+        name: name,
+        amount: amount,
+        budgetId: budgetId,
+        createdAt: moment().format("DD/MM/yyy"),
+      })
+      .returning({ insertedId: Budgets.id });
 
-    const addNewExpense=async()=>{
-        const result=await db.insert(Expenses).values({
-            name:name,
-            amount:amount,
-            budgetId:budgetId,
-            createdAt: moment().format("DD/MM/yyy")
-        }).returning({insertedId:Budgets.id})
+    setAmount("");
+    setAmount("");
 
-
-        if(result){
-            refreshData();
-            toast('New Expense Added')
-        }
+    if (result) {
+      setLoading(false);
+      refreshData();
+      toast("New Expense Added");
     }
 
-    return (
+    setLoading(false);
+  };
+
+  return (
     <div className="border p-5 rounded-lg">
       <h2 className="font-bold text-lg">Add Expense</h2>
       <div className="mt-2">
         <h2 className="text-black font-bold my-1">Expense name</h2>
         <Input
+          value={name}
           placeholder="e.g Home Decor"
           onChange={(e) => setName(e.target.value)}
         />
@@ -39,12 +50,18 @@ function AddExpense({budgetId, user, refreshData}) {
       <div className="mt-2">
         <h2 className="text-black font-bold my-1">Expense Budget</h2>
         <Input
+          vaalue={amount}
           placeholder="e.g $1000"
           onChange={(e) => setAmount(e.target.value)}
         />
       </div>
-      <Button className='mt-3 w-full' disabled={!(name&&amount)} onClick={ ()=>addNewExpense()}>Add new Expense</Button>
-
+      <Button
+        className="mt-3 w-full"
+        disabled={!(name && amount) || loading}
+        onClick={() => addNewExpense()}
+      >
+        {loading ? <Loader className="animate-spin" /> : "Add new Expense"}
+      </Button>
     </div>
   );
 }

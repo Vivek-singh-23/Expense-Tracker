@@ -20,7 +20,7 @@ import { db } from "@/utils/dbConfig";
 import { eq } from "drizzle-orm";
 
 function EditBudget({ budgetInfo, refreshData }) {
-  const [emojiIcon, setEmojiIcon] = useState(budgetInfo.icon);
+  const [emojiIcon, setEmojiIcon] = useState(budgetInfo?.icon);
   const [openEmojiPicker, setOpenEmojiPicker] = useState(false);
 
   const [name, setName] = useState();

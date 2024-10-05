@@ -2,6 +2,7 @@ import React from "react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { SignedOut, SignInButton, SignedIn, UserButton } from "@clerk/nextjs";
+import Link from "next/link";
 
 function Header() {
   return (
@@ -9,9 +10,11 @@ function Header() {
       <Image src={"./logo.svg"} width={75} height={100} alt="logo" />
 
       <div className="flex items-center gap-4">
-        <Button className="bg-primary text-white px-4 py-2 rounded-md">
-          Get Started
-        </Button>
+        <Link href={'/dashboard/budgets'}>
+          <Button className="bg-primary text-white px-4 py-2 rounded-md">
+            Get Started
+          </Button>
+        </Link>
         <SignedOut>
           <SignInButton>
             <a
