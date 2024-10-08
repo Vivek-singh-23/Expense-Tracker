@@ -22,9 +22,8 @@ import { eq } from "drizzle-orm";
 function EditBudget({ budgetInfo, refreshData }) {
   const [emojiIcon, setEmojiIcon] = useState(budgetInfo?.icon);
   const [openEmojiPicker, setOpenEmojiPicker] = useState(false);
-
-  const [name, setName] = useState();
-  const [amount, setAmount] = useState();
+  const [name, setName] = useState(budgetInfo?.name);
+  const [amount, setAmount] = useState(budgetInfo?.amount);
 
   const { user } = useUser();
 
@@ -32,7 +31,7 @@ function EditBudget({ budgetInfo, refreshData }) {
     if (budgetInfo) {
       setEmojiIcon(budgetInfo?.icon);
       setName(budgetInfo.name);
-      setAmount(budgetInfo.amount)
+      setAmount(budgetInfo.amount);
     }
   }, [budgetInfo]);
 
@@ -52,13 +51,15 @@ function EditBudget({ budgetInfo, refreshData }) {
       toast("Budget updated Successfully");
     }
   };
+
   return (
     <div>
       <Dialog>
-        <DialogTrigger>
-          <Button className="flex gap-2">
+        {/* Use asChild to avoid creating a nested button */}
+        <DialogTrigger asChild>
+          <Button className="flex gap-2 cursor-pointer">
             <PenBox />
-            Edit
+            <span>Edit</span>
           </Button>
         </DialogTrigger>
         <DialogContent>
@@ -88,17 +89,17 @@ function EditBudget({ budgetInfo, refreshData }) {
                   <h2 className="text-black font-bold my-1">Budget name</h2>
                   <Input
                     placeholder="e.g Home Decor"
-                    defaultValue={budgetInfo?.name}
+                    value={name || ""}
                     onChange={(e) => setName(e.target.value)}
                   />
                 </div>
 
                 <div className="mt-2">
-                  <h2 className="text-black  font-bold my-1">Budget Amount</h2>
+                  <h2 className="text-black font-bold my-1">Budget Amount</h2>
                   <Input
                     placeholder="e.g 5000$"
                     type="number"
-                    defaultValue={budgetInfo?.amount}
+                    value={amount || ""}
                     onChange={(e) => setAmount(e.target.value)}
                   />
                 </div>

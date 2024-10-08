@@ -71,7 +71,7 @@ function Dashboard() {
         <div className="grid gap-5">
           <h2 className="font-bold text-lg">Latest Budgets</h2>
           {budgetList.map((budget, index) => (
-            <Budgetitem budget={budget} key={index} /> // Use map instead of forEach
+            <Budgetitem budget={budget} key={index} /> 
           ))}
         </div>
       </div>

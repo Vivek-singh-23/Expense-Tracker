@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -12,21 +12,19 @@ import {
 } from "@/components/ui/dialog";
 import EmojiPicker from "emoji-picker-react";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Budgets } from "@/utils/schema";
 import { useUser } from "@clerk/nextjs";
 import { db } from "@/utils/dbConfig";
 import { toast } from "sonner";
 
-function CreateBudget({refreshData}) {
+function CreateBudget({ refreshData }) {
   const [emojiIcon, setEmojiIcon] = useState("😀");
   const [openEmojiPicker, setOpenEmojiPicker] = useState(false);
-
   const [name, setName] = useState();
   const [amount, setAmount] = useState();
-
   const { user } = useUser();
+
   const onCreateBudget = async () => {
     const result = await db
       .insert(Budgets)
@@ -39,14 +37,15 @@ function CreateBudget({refreshData}) {
       .returning({ insertedId: Budgets.id });
 
     if (result) {
-        refreshData();
+      refreshData();
       toast("New Budget Created");
     }
   };
+
   return (
     <div>
       <Dialog>
-        <DialogTrigger>
+        <DialogTrigger asChild>
           <div className="bg-slate-100 p-10 rounded-md items-center flex flex-col border-2 border-dashed cursor-pointer hover:shadow-md">
             <h2 className="text-3xl">+</h2>
             <h2>Create new Budget</h2>
@@ -84,7 +83,7 @@ function CreateBudget({refreshData}) {
                 </div>
 
                 <div className="mt-2">
-                  <h2 className="text-black  font-bold my-1">Budget Amount</h2>
+                  <h2 className="text-black font-bold my-1">Budget Amount</h2>
                   <Input
                     placeholder="e.g 5000$"
                     type="number"
